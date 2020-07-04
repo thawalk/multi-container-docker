@@ -6,7 +6,7 @@ before_install:
     - docker build -t thawalk/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-    - docker run thawalk/react-test npm test -- --coverage
+    - docker run -e CI=true thawalk/react-test npm test -- --coverage
 
 after_success:
     - docker build -t thawalk/multi-client ./client
@@ -18,4 +18,3 @@ after_success:
     - docker push thawalk/multi-nginx
     - docker push thawalk/multi-server
     - docker push thawalk/multi-worker
-    
