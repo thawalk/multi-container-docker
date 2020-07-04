@@ -1,0 +1,21 @@
+sudo: required
+services: 
+    - docker
+
+before_install:
+    - docker build -t thawalk/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run thawalk/react-test npm test -- --coverage
+
+after_success:
+    - docker build -t thawalk/multi-client ./client
+    - docker build -t thawalk/multi-nginx ./nginx
+    - docker build -t thawalk/multi-server ./server
+    - docker build -t thawalk/multi-worker ./worker
+    - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password --password-stdin
+    - docker push thawalk/multi-client
+    - docker push thawalk/multi-nginx
+    - docker push thawalk/multi-server
+    - docker push thawalk/multi-worker
+    
