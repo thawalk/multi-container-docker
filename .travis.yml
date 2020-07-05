@@ -18,3 +18,16 @@ after_success:
     - docker push thawalk/multi-nginx
     - docker push thawalk/multi-server
     - docker push thawalk/multi-worker
+
+deploy: 
+    edge: true
+    provider: elasticbeanstalk
+    region: "ap-southeast-1"
+    app: "multi-container-docker"
+    env: "MultiContainerDocker-env"
+    bucket_name: "elasticbeanstalk-ap-southeast-1-924586253952"
+    bucket_path: "docker-multi"
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
